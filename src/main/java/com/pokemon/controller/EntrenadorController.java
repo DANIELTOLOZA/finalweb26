@@ -2,6 +2,11 @@ package com.pokemon.controller;
 
 import com.pokemon.model.Entrenador;
 import com.pokemon.service.EntrenadorService;
+import com.pokemon.service.CapturaService;
+import com.pokemon.service.PokemonService;
+import com.pokemon.model.Captura;
+import com.pokemon.model.Pokemon;
+import java.util.stream.Collectors;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +21,8 @@ import java.util.List;
 public class EntrenadorController {
 
     private final EntrenadorService entrenadorService;
+    private final CapturaService capturaService;
+    private final PokemonService pokemonService;
 
     @GetMapping
     public List<Entrenador> getAll() {

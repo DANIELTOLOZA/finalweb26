@@ -1,0 +1,5 @@
+id,nombre,descripcion,tipo_pokemon,fecha_descubrimiento,generacion,uuid
+1,Bulbasaur,"Este Pokémon nace con una semilla en el lomo, que brota con el paso del tiempo.",3,1996-02-27,1,57b28014-a957-41ec-b8d4-fdf696ab9cf2
+2,Charmander,"Prefiere las cosas calientes. Dicen que cuando llueve le sale vapor de la punta de la cola.",1,1996-02-27,1,a60eb224-ec40-424a-b5e1-8ee22dbbf6cb
+3,Squirtle,"El caparazón de Squirtle no sirve únicamente para protegerlo. Su forma redondeada y sus hendiduras reducen la resistencia al agua.",2,1996-02-27,1,4ffc6bb5-5d93-4a11-b0db-6e69bb0d5db6
+4,Pikachu,"Tiene unas bolsas en las mejillas donde almacena electricidad. Cuando la libera de golpe, la potencia es similar a la de un rayo.",4,1996-02-27,1,e377f012-70b5-4b20-bdfa-b1db9d2b86ab

@@ -55,5 +55,5 @@ public class EntrenadorService {
     public void delete(Integer id) {
         Entrenador entrenador = findById(id);
         entrenadorRepository.delete(entrenador);
-    }
+    }\n    @Transactional(readOnly = true)\n    public Entrenador findByUuid(String uuid) {\n        return entrenadorRepository.findByUuid(uuid)\n                .orElseThrow(() -> new IllegalArgumentException("Entrenador no encontrado con UUID: " + uuid));\n    }
 }

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokéManager - Sistema de Control y Capturas</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-circle-dot pokeball-logo"></i>
+                <h1>PokéManager</h1>
+            </div>
+            <nav class="sidebar-menu">
+                <button class="menu-item active" data-target="dashboard">
+                    <i class="fa-solid fa-chart-simple"></i> Dashboard
+                </button>
+                <button class="menu-item" data-target="entrenadores">
+                    <i class="fa-solid fa-user-ninja"></i> Entrenadores
+                </button>
+                <button class="menu-item" data-target="pokemons">
+                    <i class="fa-solid fa-paw"></i> Pokémon
+                </button>
+                <button class="menu-item" data-target="pueblos">
+                    <i class="fa-solid fa-house-chimney"></i> Pueblos
+                </button>
+                <button class="menu-item" data-target="tipos">
+                    <i class="fa-solid fa-tags"></i> Tipos Pokémon
+                </button>
+                <button class="menu-item" data-target="capturas">
+                    <i class="fa-solid fa-gamepad"></i> Capturas
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <p>Mundo Pokémon &copy; 2026</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-title">
+                    <h2 id="section-title">Dashboard</h2>
+                    <p id="section-subtitle">Vista general de tu base de datos Pokémon</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="btn-quick-capture">
+                        <i class="fa-solid fa-circle-dot"></i> Captura Rápida
+                    </button>
+                </div>
+            </header>
+
+            <!-- Notifications Container -->
+            <div id="toast-container"></div>
+
+            <!-- Dashboard View -->
+            <section class="view-section active" id="view-dashboard">
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card" style="--accent: #ff4757;">
+                        <div class="stat-icon"><i class="fa-solid fa-paw"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-pokemons">0</h3>
+                            <p>Pokémon Registrados</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="--accent: #2ed573;">
+                        <div class="stat-icon"><i class="fa-solid fa-user-ninja"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-entrenadores">0</h3>
+                            <p>Entrenadores Activos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="--accent: #ffa502;">
+                        <div class="stat-icon"><i class="fa-solid fa-house-chimney"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-pueblos">0</h3>
+                            <p>Pueblos Descubiertos</p>
+                        </div>
+                    </div>
+                    <div class="stat-card" style="--accent: #1e90ff;">
+                        <div class="stat-icon"><i class="fa-solid fa-gamepad"></i></div>
+                        <div class="stat-info">
+                            <h3 id="stat-capturas">0</h3>
+                            <p>Total Capturas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Content -->
+                <div class="dashboard-layout">
+                    <!-- Quick Capture Form & Animation -->
+                    <div class="panel capture-simulator-panel">
+                        <h3>Simulador de Capturas</h3>
+                        <p class="panel-desc">Vincula un Pokémon a un entrenador y observa la simulación</p>
+                        
+                        <form id="form-simulator" class="simulator-form">
+                            <div class="form-group">
+                                <label for="sim-entrenador">Entrenador</label>
+                                <select id="sim-entrenador" required>
+                                    <option value="">Selecciona un Entrenador...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sim-pokemon">Pokémon Libre</label>
+                                <select id="sim-pokemon" required>
+                                    <option value="">Selecciona un Pokémon...</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-capture btn-block" id="btn-simulate-capture">
+                                Lanzar Poké Ball <i class="fa-solid fa-bullseye"></i>
+                            </button>
+                        </form>
+
+                        <!-- PokeBall Animation Area -->
+                        <div class="animation-container">
+                            <div class="ball-wrapper" id="ball-wrapper">
+                                <div class="pokeball" id="pokeball-element">
+                                    <div class="pokeball-top"></div>
+                                    <div class="pokeball-middle">
+                                        <div class="pokeball-button" id="pokeball-button"></div>
+                                    </div>
+                                    <div class="pokeball-bottom"></div>
+                                </div>
+                            </div>
+                            <div class="capture-text" id="capture-status-text">¡Listo para la captura!</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Captures Table -->
+                    <div class="panel">
+                        <h3>Últimas Capturas Registradas</h3>
+                        <p class="panel-desc">Relación en tiempo real de entrenadores y sus Pokémon</p>
+                        <div class="table-responsive">
+                            <table class="table" id="table-recent-captures">
+                                <thead>
+                                    <tr>
+                                        <th>Entrenador</th>
+                                        <th>Pokémon</th>
+                                        <th>Tipo</th>
+                                        <th>UUID Registro</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Entrenadores View -->
+            <section class="view-section" id="view-entrenadores">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Listado de Entrenadores</h3>
+                        <button class="btn btn-success" id="btn-add-entrenador">
+                            <i class="fa-solid fa-plus"></i> Nuevo Entrenador
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="table-entrenadores">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>F. Nacimiento</th>
+                                    <th>F. Vinculación</th>
+                                    <th>Pueblo de Origen</th>
+                                    <th>UUID</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pokémon View -->
+            <section class="view-section" id="view-pokemons">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Catálogo de Pokémon</h3>
+                        <button class="btn btn-success" id="btn-add-pokemon">
+                            <i class="fa-solid fa-plus"></i> Registrar Pokémon
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="table-pokemons">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Tipo</th>
+                                    <th>Generación</th>
+                                    <th>F. Descubrimiento</th>
+                                    <th>Descripción</th>
+                                    <th>UUID</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pueblos View -->
+            <section class="view-section" id="view-pueblos">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Pueblos y Ciudades</h3>
+                        <button class="btn btn-success" id="btn-add-pueblo">
+                            <i class="fa-solid fa-plus"></i> Nuevo Pueblo
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="table-pueblos">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>UUID</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tipos View -->
+            <section class="view-section" id="view-tipos">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Tipos Elementales</h3>
+                        <button class="btn btn-success" id="btn-add-tipo">
+                            <i class="fa-solid fa-plus"></i> Nuevo Tipo
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="table-tipos">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Descripción</th>
+                                    <th>UUID</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Capturas View -->
+            <section class="view-section" id="view-capturas">
+                <div class="panel">
+                    <div class="panel-header">
+                        <h3>Historial de Capturas Pokémon</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="table-capturas">
+                            <thead>
+                                <tr>
+                                    <th>Entrenador</th>
+                                    <th>Pokémon</th>
+                                    <th>Tipo</th>
+                                    <th>Generación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Generic Modal for Forms -->
+    <div class="modal-overlay" id="modal-form-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-form-title">Formulario</h3>
+                <button class="modal-close" id="modal-form-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Forms are injected here depending on clicked action -->
+                <form id="active-form">
+                    <!-- Dynamic fields -->
+                    <div id="form-fields"></div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btn-cancel-form">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btn-submit-form">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script file -->
+    <script src="/js/app.js"></script>
+</body>
+</html>

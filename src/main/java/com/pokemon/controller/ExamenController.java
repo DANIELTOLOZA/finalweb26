@@ -85,6 +85,25 @@ public class ExamenController {
         return ResponseEntity.ok(Collections.emptyMap());
     }
 
+    // Endpoint de login (POST /entrenador/login)
+    @PostMapping("/entrenador/login")
+    public ResponseEntity<Map<String, String>> loginEntrenador(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("El email es obligatorio");
+        }
+
+        Entrenador entrenador = entrenadorService.findAll().stream()
+                .filter(e -> email.equalsIgnoreCase(e.getEmail()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Entrenador no encontrado con el email: " + email));
+
+        Map<String, String> response = new HashMap<>();
+        response.put("uuid", entrenador.getUuid());
+
+        return ResponseEntity.ok(response);
+    }
+
     // 4. GET /pokemon/{id}
     @GetMapping("/pokemon/{id}")
     public ResponseEntity<List<Map<String, String>>> listarPokemonsConId(@PathVariable String id) {

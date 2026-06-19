@@ -129,6 +129,14 @@ class PokemonApplicationTests {
         // 5. Eliminar entrenador (DELETE /entrenador/{uuid})
         mockMvc.perform(delete("/entrenador/" + uuid))
                 .andExpect(status().isOk());
+
+        // 6. Probar Login (POST /entrenador/login)
+        String loginJson = "{\"email\": \"ash@gmail.com\"}";
+        mockMvc.perform(post("/entrenador/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginJson))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.uuid").value("7f9bb8c2-3e2c-49f3-8ea8-cf2bb22a84ac"));
     }
 }
 

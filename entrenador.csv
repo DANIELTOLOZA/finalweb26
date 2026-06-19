@@ -1,0 +1,4 @@
+id,nombre,apellido,email,fecha_nacimiento,fecha_vinculacion,pueblo_id,uuid
+1,Ash,Ketchum,ash@gmail.com,1987-05-22,1997-04-01,1,7f9bb8c2-3e2c-49f3-8ea8-cf2bb22a84ac
+2,Misty,Waterflower,misty@gmail.com,1988-06-12,1998-05-15,3,87cf9bb5-4f3c-41c3-be99-2e21bbdb83fb
+3,Brock,Harrison,brock@gmail.com,1985-08-01,1998-05-15,2,9a2bc8e2-c4bc-467a-8f3a-c8e11a2f1b40

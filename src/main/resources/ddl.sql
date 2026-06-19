@@ -1,18 +1,26 @@
-CREATE SCHEMA IF NOT EXISTS pokemon;
+DROP SCHEMA IF EXISTS pokemon CASCADE;
+CREATE SCHEMA pokemon;
 
-CREATE TABLE IF NOT EXISTS pokemon.pueblo (
+DROP TABLE IF EXISTS pokemon.captura;
+DROP TABLE IF EXISTS pokemon.combate;
+DROP TABLE IF EXISTS pokemon.entrenador;
+DROP TABLE IF EXISTS pokemon.pokemon;
+DROP TABLE IF EXISTS pokemon.tipo_pokemon;
+DROP TABLE IF EXISTS pokemon.pueblo;
+
+CREATE TABLE pokemon.pueblo (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     uuid VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS pokemon.tipo_pokemon (
+CREATE TABLE pokemon.tipo_pokemon (
     id SERIAL PRIMARY KEY,
     descripcion VARCHAR(100) NOT NULL,
     uuid VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS pokemon.pokemon (
+CREATE TABLE pokemon.pokemon (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT NOT NULL,
@@ -23,7 +31,7 @@ CREATE TABLE IF NOT EXISTS pokemon.pokemon (
     FOREIGN KEY (tipo_pokemon) REFERENCES pokemon.tipo_pokemon(id)
 );
 
-CREATE TABLE IF NOT EXISTS pokemon.entrenador (
+CREATE TABLE pokemon.entrenador (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
     apellido VARCHAR(50) NOT NULL,
@@ -35,7 +43,7 @@ CREATE TABLE IF NOT EXISTS pokemon.entrenador (
     FOREIGN KEY (pueblo_id) REFERENCES pokemon.pueblo(id)
 );
 
-CREATE TABLE IF NOT EXISTS pokemon.captura (
+CREATE TABLE pokemon.captura (
     pokemon_id INTEGER NOT NULL,
     entrenador_id INTEGER NOT NULL,
     PRIMARY KEY (pokemon_id, entrenador_id),
@@ -43,7 +51,7 @@ CREATE TABLE IF NOT EXISTS pokemon.captura (
     FOREIGN KEY (entrenador_id) REFERENCES pokemon.entrenador(id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS pokemon.combate (
+CREATE TABLE pokemon.combate (
     id SERIAL PRIMARY KEY,
     fecha_combate DATE NOT NULL,
     resultado VARCHAR(50) NOT NULL,
@@ -51,4 +59,3 @@ CREATE TABLE IF NOT EXISTS pokemon.combate (
     uuid VARCHAR(100) NOT NULL,
     FOREIGN KEY (entrenador_id) REFERENCES pokemon.entrenador(id) ON DELETE CASCADE
 );
-

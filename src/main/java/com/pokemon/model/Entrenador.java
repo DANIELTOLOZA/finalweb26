@@ -29,6 +29,10 @@ public class Entrenador {
     @Column(nullable = false, length = 50)
     private String apellido;
 
+    @Size(max = 100, message = "El email no puede exceder los 100 caracteres")
+    @Column(unique = true, length = 100)
+    private String email;
+
     @NotNull(message = "La fecha de nacimiento es obligatoria")
     @Column(name = "fecha_nacimiento", nullable = false)
     private LocalDate fechaNacimiento;
@@ -44,6 +48,12 @@ public class Entrenador {
 
     @Column(nullable = false, length = 100)
     private String uuid;
+
+    public Integer getId() { return this.id; }
+    public String getNombre() { return this.nombre; }
+    public String getUuid() { return this.uuid; }
+    public java.time.LocalDate getFechaVinculacion() { return this.fechaVinculacion; }
+    public String getEmail() { return this.email; }
 
     @PrePersist
     public void prePersist() {
