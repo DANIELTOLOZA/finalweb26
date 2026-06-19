@@ -1,128 +1,164 @@
-Pokémon Capture Management – README
-(project root: C:\Users\estudiantes\Desktop\final\finalweb26)
+# Pokémon Capture Management – README
 
-📖 Overview
-A Spring Boot REST API that lets you:
+(Raíz del proyecto: `C:\Users\estudiantes\Desktop\final\finalweb26`)
 
-Feature	Endpoint	Description
-Trainer management	GET /api/entrenadores/{uuid}	Retrieve a trainer by its UUID
-List trainer’s Pokémon	GET /api/entrenadores/{uuid}/pokemons	All Pokémon that belong to the trainer
-Add a Pokémon to a trainer	POST /api/entrenadores/{uuid}/pokemons/{pokemonUuid}	Attach an existing Pokémon to the trainer
-Other CRUD	Standard Spring Data‑JPA repositories for pokemon, pueblo, tipo_pokemon, captura	Direct DB access via the generated repository beans
-Database	Supabase PostgreSQL (or local H2) – schema defined in src/main/resources/ddl.sql	Use the DDL to recreate the schema locally
-Swagger UI	http://localhost:8080/swagger-ui.html	Interactive API documentation
-CORS	Allows any origin (*) in development – configurable in WebConfig	Front‑end apps (React/Vue/Angular) can call the API without cross‑origin errors
-🛠️ Prerequisites
-Tool	Minimum version
-Java	17 (installed & JAVA_HOME set)
-Maven	3.9+
-Git	any recent version (used for commits)
-PostgreSQL client (optional)	psql for manual CSV export/import
-Supabase account (optional)	DB URL postgresql://postgres:<PWD>@<HOST>:5432/postgres
-Node (optional)	For front‑end experiments – not required for the backend
-🚀 Getting Started
-Clone the repo (if you haven’t already)
+## 📖 Descripción general
 
-bash
-git clone <repo‑url>
-cd finalweb26
-Configure the database
+API REST construida con Spring Boot que permite gestionar entrenadores y sus Pokémon.
 
-Option A – Supabase (cloud)
+| Funcionalidad | Endpoint | Descripción |
+|---------------|----------|-------------|
+| Gestión de entrenadores | `GET /api/entrenadores/{uuid}` | Obtiene un entrenador por su UUID |
+| Listar Pokémon de un entrenador | `GET /api/entrenadores/{uuid}/pokemons` | Todos los Pokémon pertenecientes al entrenador |
+| Añadir un Pokémon a un entrenador | `POST /api/entrenadores/{uuid}/pokemons/{pokemonUuid}` | Asocia un Pokémon existente al entrenador |
+| Otros CRUD | Repositorios estándar de Spring Data JPA para `pokemon`, `pueblo`, `tipo_pokemon`, `captura` | Acceso directo a la base de datos mediante los beans de repositorio generados |
+| Base de datos | Supabase PostgreSQL (o H2 local) – el esquema está definido en `src/main/resources/ddl.sql` | Usa el DDL para recrear el esquema localmente |
+| Swagger UI | `http://localhost:8080/swagger-ui.html` | Documentación interactiva de la API |
+| CORS | Permite cualquier origen (`*`) en desarrollo – configurable en `WebConfig` | Las aplicaciones frontend (React/Vue/Angular) pueden llamar a la API sin errores de origen cruzado |
 
-Edit src/main/resources/application.yml → prod profile:
+## 🛠️ Prerrequisitos
 
-yaml
-spring:
-  datasource:
-    url: jdbc:postgresql://<HOST>:5432/postgres
-    username: postgres
-    password: <YOUR_PASSWORD>
-Option B – Local H2 (in‑memory, for quick tests)
+| Herramienta | Versión mínima |
+|-------------|----------------|
+| Java        | 17 (instalado y `JAVA_HOME` configurado) |
+| Maven       | 3.9+ |
+| Git         | cualquier versión reciente (para commits) |
+| Cliente PostgreSQL (opcional) | `psql` para exportación/importación manual de CSV |
+| Cuenta en Supabase (opcional) | URL de la DB: `postgresql://postgres:<PWD>@<HOST>:5432/postgres` |
+| Node (opcional) | Para experimentos con el frontend – no requerido para el backend |
 
-The dev profile already points to an H2 DB, just run the app.
+## 🚀 Primeros pasos
 
-Build & run
+1. **Clonar el repositorio** (si no lo has hecho)
 
-bash
-mvn clean install          # compile, run unit tests
-mvn spring-boot:run       # start the server (default port 8080)
-You should see:
+   ```bash
+   git clone <repo‑url>
+   cd finalweb26
+   ```
 
-Started PokemonApplication in X.xxx seconds (JVM running for X.xxx)
-Open Swagger UI
+2. **Configurar la base de datos**
 
-Navigate to http://localhost:8080/swagger-ui.html.
-All endpoints are listed with request/response models.
-You can try the API directly from this page.
+   - **Opción A – Supabase (en la nube)**  
+     Edita `src/main/resources/application.yml` → perfil `prod`:
 
-CORS
+     ```yaml
+     spring:
+       datasource:
+         url: jdbc:postgresql://<HOST>:5432/postgres
+         username: postgres
+         password: <TU_CONTRASEÑA>
+     ```
 
-In development the API accepts any origin (*).
-For production, edit src/main/java/com/pokemon/config/WebConfig.java and replace the setAllowedOrigins list with your front‑end domain(s).
+   - **Opción B – H2 local (en memoria, para pruebas rápidas)**  
+     El perfil `dev` ya apunta a una BD H2, solo ejecuta la aplicación.
 
-📂 Project Structure
+3. **Compilar y ejecutar**
+
+   ```bash
+   mvn clean install          # compila y ejecuta las pruebas unitarias
+   mvn spring-boot:run        # inicia el servidor (puerto 8080 por defecto)
+   ```
+
+   Deberías ver un mensaje similar a:
+
+   ```
+   Started PokemonApplication in X.xxx seconds (JVM running for X.xxx)
+   ```
+
+4. **Abrir Swagger UI**  
+   Navega a [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html).  
+   Allí se listan todos los endpoints con sus modelos de solicitud/respuesta. Puedes probar la API directamente desde esta página.
+
+5. **CORS**  
+   En desarrollo, la API acepta cualquier origen (`*`).  
+   Para producción, edita `src/main/java/com/pokemon/config/WebConfig.java` y reemplaza la lista `setAllowedOrigins` con los dominios de tu frontend.
+
+## 📂 Estructura del proyecto
+
+```
 src/
  ├─ main/
  │   ├─ java/com/pokemon/
- │   │   ├─ controller/          # REST controllers
- │   │   ├─ model/                # JPA entities
- │   │   ├─ repository/           # Spring Data JPA interfaces
- │   │   ├─ service/              # Business logic
- │   │   └─ config/                # WebConfig (CORS)
+ │   │   ├─ controller/          # Controladores REST
+ │   │   ├─ model/               # Entidades JPA
+ │   │   ├─ repository/          # Interfaces Spring Data JPA
+ │   │   ├─ service/             # Lógica de negocio
+ │   │   └─ config/              # WebConfig (CORS)
  │   └─ resources/
- │       ├─ application.yml       # Spring profiles (dev/prod)
- │       ├─ ddl.sql               # Full DDL (DROP/CREATE)
- │       ├─ schema.sql            # Original schema used for Boot
- │       └─ data.sql              # Seed data
+ │       ├─ application.yml      # Perfiles de Spring (dev/prod)
+ │       ├─ ddl.sql              # DDL completo (DROP/CREATE)
+ │       ├─ schema.sql           # Esquema original usado para Boot
+ │       └─ data.sql             # Datos de prueba
  └─ test/
-     └─ java/com/pokemon/          # Unit tests (PokemonApplicationTests)
-Important Files
-File	Purpose
-pom.xml	Maven dependencies – includes springdoc-openapi-starter-webmvc-ui for Swagger
-WebConfig.java	CORS filter bean
-ddl.sql	Full DDL with DROP IF EXISTS – run on a fresh DB to recreate the schema
-CSVs (entrenador.csv, pokemon.csv, …)	Ready‑to‑import/export files for Supabase
-README.md	This file – usage guide
-📦 CSV Export / Import
-The repository ships empty CSV templates that match the table columns exactly:
+     └─ java/com/pokemon/        # Pruebas unitarias (PokemonApplicationTests)
+```
 
-c:/.../finalweb26/entrenador.csv
-c:/.../finalweb26/pokemon.csv
-c:/.../finalweb26/pueblo.csv
-c:/.../finalweb26/tipo_pokemon.csv
-c:/.../finalweb26/captura.csv
-Import to Supabase
+### Archivos importantes
 
-Open the Supabase dashboard → Table editor → Import.
-Select the appropriate CSV file.
-Confirm the column mapping (headers already match).
-Export from Supabase (manual)
+| Archivo | Propósito |
+|---------|-----------|
+| `pom.xml` | Dependencias de Maven – incluye `springdoc-openapi-starter-webmvc-ui` para Swagger |
+| `WebConfig.java` | Bean del filtro CORS |
+| `ddl.sql` | DDL completo con `DROP IF EXISTS` – ejecutar en una BD nueva para recrear el esquema |
+| CSV (`entrenador.csv`, `pokemon.csv`, …) | Archivos listos para importar/exportar a Supabase |
+| `README.md` | Este archivo – guía de uso |
 
-If you have psql installed, run:
+## 📦 Exportación / Importación CSV
 
-bash
+El repositorio incluye archivos CSV vacíos que coinciden exactamente con las columnas de las tablas:
+
+- `c:/.../finalweb26/entrenador.csv`
+- `c:/.../finalweb26/pokemon.csv`
+- `c:/.../finalweb26/pueblo.csv`
+- `c:/.../finalweb26/tipo_pokemon.csv`
+- `c:/.../finalweb26/captura.csv`
+
+**Importar a Supabase**  
+Ve al panel de Supabase → Editor de tablas → Importar.  
+Selecciona el archivo CSV correspondiente.  
+Confirma el mapeo de columnas (los encabezados ya coinciden).
+
+**Exportar desde Supabase (manual)**  
+Si tienes `psql` instalado, ejecuta:
+
+```bash
 psql "postgresql://postgres:<PWD>@<HOST>:5432/postgres" \
-    -c "\copy (SELECT * FROM pokemon.entrenador) TO 'entrenador.csv' CSV HEADER
-# repeat for each table, changing the table name and CSV name
-The command overwrites the existing CSV files in the project root.
+    -c "\copy (SELECT * FROM pokemon.entrenador) TO 'entrenador.csv' CSV HEADER"
+# Repite para cada tabla, cambiando el nombre de la tabla y el archivo CSV
+```
 
-🧪 Testing
-Run the JUnit suite:
+Este comando sobrescribirá los archivos CSV existentes en la raíz del proyecto.
 
-bash
+## 🧪 Pruebas
+
+Ejecuta la suite de JUnit:
+
+```bash
 mvn test
-The default test (PokemonApplicationTests) boots the Spring context and verifies that the API starts without errors.
+```
 
-You can also use Postman or curl:
+La prueba por defecto (`PokemonApplicationTests`) inicia el contexto de Spring y verifica que la API arranque sin errores.
 
-bash
-# List a trainer's Pokémon
+También puedes usar Postman o `curl`:
+
+```bash
+# Listar los Pokémon de un entrenador
 curl -X GET "http://localhost:8080/api/entrenadores/f3262c24-473d-437d-a5cf-e87683637954/pokemons"
-🔧 Customisation
-Add new endpoints – create a new controller method and, if needed, a service method.
-Change DB – edit the datasource URL/driver in application.yml.
-Secure the API – add Spring Security and replace the permissive CORS config with a whitelist.
+```
+
+## 🔧 Personalización
+
+- **Añadir nuevos endpoints**: crea un nuevo método en el controlador y, si es necesario, un método en el servicio.
+- **Cambiar la base de datos**: edita la URL y el driver en `application.yml`.
+- **Asegurar la API**: agrega Spring Security y reemplaza la configuración CORS permisiva por una lista blanca.
+
+## 📜 Licencia
+
+MIT – siéntete libre de bifurcar, extender o incorporar esta API en tus propios proyectos.
+
+---
+
+¡Disfruta construyendo equipos Pokémon!
 📜 License
 MIT – feel free to fork, extend, or embed this API in your own projects.
 
